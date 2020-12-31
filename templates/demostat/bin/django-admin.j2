@@ -1,0 +1,8 @@
+#!/bin/bash
+
+. {{ demostat_venv_path }}/bin/activate
+cd {{ demostat_path }}
+export PYTHONPATH={{ demostat_path }}
+export DJANGO_SETTINGS_MODULE=settings
+
+django-admin $@

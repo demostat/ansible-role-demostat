@@ -1,0 +1,7 @@
+bind = ['{{ demostat_gunicorn_listen }}:{{ demostat_gunicorn_port }}']
+proc_name = "{{ demostat_gunicorn_procname }}"
+chdir = "{{ demostat_path }}"
+pidfile = "{{ demostat_path }}/var/gunicorn.pid"
+accesslog = "{{ demostat_path }}/var/logs/access.log"
+errorlog = "{{ demostat_path }}/var/logs/error.log"
+workers = {{ demostat_gunicorn_workers }}

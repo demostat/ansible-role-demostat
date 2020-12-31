@@ -1,0 +1,9 @@
+---
+- name: Template nginx configuration
+  template:
+    src: nginx/demostat.conf.j2
+    dest: '{{ demostat_nginx_path }}'
+    mode: '644'
+  notify:
+    - test nginx configuration
+    - restart nginx

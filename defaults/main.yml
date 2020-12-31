@@ -1,0 +1,68 @@
+---
+demostat_user: "demostat"
+demostat_group: "{{ demostat_user }}"
+demostat_path: "/opt/demostat"
+demostat_venv_path: "{{ demostat_path }}/venv"
+demostat_systemd_prefix: 'demostat-'
+demostat_apt_update: true
+
+demostat_base_url: 'http{{ "s" if demostat_nginx_ssl }}://{{ demostat_nginx_server_name }}'
+demostat_secret_key: null
+demostat_debug: false
+
+demostat_db_engine: 'sqlite3'  # mysql, sqlite3 or postgresql_psycopg2
+demostat_db_name: 'demostat.sqlite3'
+demostat_db_user: ''
+demostat_db_pass: ''
+demostat_db_host: ''
+demostat_db_port: ''
+
+demostat_email_backend: 'django.core.mail.backends.smtp.EmailBackend'
+demostat_email_host: ''
+demostat_email_port: ''
+demostat_email_host_user: ''
+demostat_email_host_pass: ''
+demostat_email_default_from_email: '{{ demostat_email_host_user }}'
+demostat_email_confirmation_from: '{{ demostat_email_default_from_email }}'
+demostat_email_server_email: '{{ demostat_email_default_from_email }}'
+demostat_email_use_ssl: true
+
+demostat_time_zone: '{{ ansible_date_time["tz"] }}'
+
+demostat_allowed_hosts:
+  - 'localhost'
+  - '127.0.0.1'
+  - '::1'
+  - '::ffff::127.0.0.1'
+  - '{{ demostat_nginx_server_name }}'
+
+demostat_admins:
+  - name: Demostat Admin
+    email: demostat@localhost
+
+demostat_cache_backend: 'django.core.cache.backends.memcached.PyLibMCCache'
+demostat_cache_location: 'localhost'
+
+demostat_gunicorn_listen: '127.0.0.1'
+demostat_gunicorn_port: 8000
+demostat_gunicorn_procname: '{{ demostat_systemd_prefix }}gunicorn'
+demostat_gunicorn_workers: 4
+
+demostat_nginx_enabled: false
+demostat_nginx_server_name: 'demostat.example.com'
+demostat_nginx_ssl: true
+demostat_nginx_path: '/etc/nginx/sites-enabled/demostat.conf'
+demostat_nginx_ssl_redirect: true
+demostat_nginx_v6only: false
+demostat_nginx_ssl_certificate: null
+demostat_nginx_ssl_key: null
+
+demostat_dependencies:
+  - build-essential
+  - memcached
+  - python3-dev
+  - python3-wheel
+  - python3-setuptools
+  - python3-virtualenv
+  - memcached
+  - libmemcached-dev

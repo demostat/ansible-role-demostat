@@ -1,0 +1,48 @@
+SECRET_KEY = '{{ demostat_secret_key }}'
+
+DEBUG = {{ demostat_debug | ternary('True', 'False') }}
+
+ADMINS = [{% for item in demostat_admins %}
+  ('{{ item.name }}', '{{ item.email }}'),
+{% endfor %}
+]
+
+ALLOWED_HOSTS = [{% for item in demostat_allowed_hosts %}
+  '{{ item }}',
+{% endfor %}
+]
+
+DATABASES = {
+   'default': {
+     'ENGINE': 'django.db.backends.{{ demostat_db_engine }}',
+     'NAME': '{{ demostat_db_name }}',
+     'USER': '{{ demostat_db_user }}',
+     'PASSWORD': '{{ demostat_db_pass }}',
+     'HOST': '{{ demostat_db_host }}',
+     'PORT': '{{ demostat_db_port }}',
+   }
+}
+
+CACHES = {
+  'default': {
+    'BACKEND': '{{ demostat_cache_backend }}',
+    'LOCATION': '{{ demostat_cache_location }}'
+  }
+}
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_SSL = True
+TIME_ZONE = '{{ demostat_time_zone }}'
+
+EMAIL_BACKEND = '{{ demostat_email_backend }}'
+EMAIL_CONFIRMATION_FROM = '{{ demostat_email_confirmation_from }}'
+DEFAULT_FROM_EMAIL = '{{ demostat_email_default_from_email }}'
+SERVER_EMAIL = '{{ demostat_email_server_email }}'
+{% if demostat_email_host is defined and demostat_email_host %}
+EMAIL_HOST = '{{ demostat_email_host }}'
+EMAIL_PORT = {{ demostat_email_port }}
+EMAIL_USE_SSL = {{ demostat_email_use_ssl | ternary('True', 'False') }}
+EMAIL_HOST_USER = '{{ demostat_email_host_user }}'
+EMAIL_HOST_PASSWORD = '{{ demostat_email_host_pass }}'
+{% endif %}

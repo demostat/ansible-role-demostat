@@ -1,0 +1,16 @@
+[Unit]
+Description=Demostat web interface
+After=syslog.target network.target
+
+[Service]
+PIDFile={{ demostat_path }}/var/gunicorn.pid
+WorkingDirectory={{ demostat_path }}
+ExecStart={{ demostat_path }}/bin/gunicorn -c {{ demostat_path }}/gunicorn.conf wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+PrivateTmp=true
+User={{ demostat_user }}
+Group={{ demostat_group }}
+
+[Install]
+WantedBy=multi-user.target

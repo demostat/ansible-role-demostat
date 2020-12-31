@@ -1,0 +1,61 @@
+---
+- block:
+    - name: Install/update setuptools and create the virtualenv
+      pip:
+        name:
+          - setuptools
+          - wheel
+        virtualenv: "{{ demostat_venv_path }}"
+        virtualenv_command: "/usr/bin/python3 -m venv"
+        state: latest
+
+    - name: Install pylibmc pip packages
+      pip:
+        name: pylibmc
+        virtualenv: "{{ demostat_venv_path }}"
+        state: latest
+      notify:
+        - restart gunicorn
+
+    - name: Install psycopg2-binary
+      pip:
+        name: psycopg2-binary
+        virtualenv: "{{ demostat_venv_path }}"
+        state: latest
+      notify:
+        - django-admin migrate
+        - restart gunicorn
+      when: demostat_db_engine == 'postgresql_psycopg2'
+
+    - name: Install mysqlclient pip package
+      pip:
+        name: mysqlclient
+        virtualenv: "{{ demostat_venv_path }}"
+        state: latest
+      notify:
+        - django-admin migrate
+        - restart gunicorn
+      when: demostat_db_engine == 'mysql'
+
+    - name: Install demostat pip package
+      pip:
+        name:
+          - demostat
+        virtualenv: "{{ demostat_venv_path }}"
+        state: latest
+      notify:
+        - django-admin migrate
+        - django-admin collectstatic
+        - restart gunicorn
+
+    - name: Install gunicorn pip package
+      pip:
+        name:
+          - gunicorn
+        virtualenv: "{{ demostat_venv_path }}"
+        state: latest
+      notify:
+        - restart gunicorn
+
+  become_user: "{{ demostat_user }}"
+  become: true

@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  role_name: demostat
+  author: "Moritz 'e1mo' Fromm"
+  description: Ansible role to install and configure demostat
+
+  license: GPL-3.0-or-later
+
+  min_ansible_version: 2.1
+
+  platforms:
+    - name: Debian
+      versions:
+        - buster
+    - name: Ubuntu
+      versions:
+        - focal
+        - bionic
+
+  galaxy_tags:
+    - python
+    - django
+    - demostat

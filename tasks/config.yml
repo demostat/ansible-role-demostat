@@ -1,0 +1,34 @@
+---
+- name: Template configuration
+  template:
+    src: 'demostat/{{ item }}.j2'
+    dest: '{{ demostat_path }}/{{ item }}'
+    owner: '{{ demostat_user }}'
+    group: '{{ demostat_group }}'
+    mode: '640'
+  with_items:
+    - __init__.py
+    - settings_local.py
+    - settings.py
+    - urls.py
+    - wsgi.py
+    - gunicorn.conf
+  notify:
+    - django-admin migrate
+    - django-admin collectstatic
+    - restart gunicorn
+
+- name: Template binaries
+  template:
+    src: 'demostat/bin/{{ item }}.j2'
+    dest: '{{ demostat_path }}/bin/{{ item }}'
+    mode: '+x'
+    owner: '{{ demostat_user }}'
+    group: '{{ demostat_group }}'
+  with_items:
+    - django-admin
+    - gunicorn
+  notify:
+    - django-admin migrate
+    - django-admin collectstatic
+    - restart gunicorn

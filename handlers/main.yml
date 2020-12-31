@@ -1,0 +1,39 @@
+---
+- name: django-admin migrate
+  become_user: "{{ demostat_user }}"
+  become: true
+  command:
+    argv:
+      - '{{ demostat_path }}/bin/django-admin'
+      - migrate
+      - '--noinput'
+
+- name: django-admin collectstatic
+  become_user: "{{ demostat_user }}"
+  become: true
+  command:
+    argv:
+      - '{{ demostat_path }}/bin/django-admin'
+      - collectstatic
+      - '--clear'
+      - '--noinput'
+      - '--verbosity 0'
+  listen: 'run demostat migrations'
+
+- name: systemd daemon reload
+  systemd:
+    daemon_reload: true
+
+- name: restart gunicorn
+  systemd:
+    name: "{{ demostat_systemd_prefix }}gunicorn"
+    state: restarted
+    enabled: true
+
+- name: test nginx configuration
+  command: nginx -t
+
+- name: restart nginx
+  systemd:
+    name: nginx
+    state: restarted
