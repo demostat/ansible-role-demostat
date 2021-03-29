@@ -18,6 +18,7 @@ server {
 }
 {% endif %}
 
+{% if not demostat_nginx_ssl_only %}
 server {
   {% if not demostat_nginx_v6only %}
   listen 80;
@@ -32,3 +33,4 @@ server {
   {% include 'templates/nginx/proxy.conf.j2' %}
   {% endif %}
 }
+{% endif %}

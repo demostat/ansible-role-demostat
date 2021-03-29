@@ -51,6 +51,7 @@ demostat_gunicorn_workers: 4
 demostat_nginx_enabled: false
 demostat_nginx_server_name: 'demostat.example.com'
 demostat_nginx_ssl: true
+demostat_nginx_ssl_only: false
 demostat_nginx_path: '/etc/nginx/sites-enabled/demostat.conf'
 demostat_nginx_ssl_redirect: true
 demostat_nginx_v6only: false
